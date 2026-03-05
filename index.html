@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프로그래밍 교육의 미래 – 선생님 의견 설문</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --paper: #f9f6f0;
+    --cream: #f0ebe0;
+    --accent: #c0392b;
+    --accent-light: #e8d5d3;
+    --gold: #b8860b;
+    --mid: #6b6258;
+    --light: #a89f94;
+    --border: #ddd8cf;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,160,130,0.08) 28px),
+      linear-gradient(135deg, #f9f6f0 0%, #f0ebe0 50%, #f9f6f0 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid var(--ink);
+    position: relative;
+  }
+
+  .publisher-tag {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .header h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(24px, 5vw, 36px);
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .header h1 em {
+    font-style: normal;
+    color: var(--accent);
+    display: block;
+    font-size: 0.75em;
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+
+  .header-desc {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.8;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .header-ornament {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
+  }
+  .header-ornament span { width: 40px; height: 1px; background: var(--light); }
+  .header-ornament i { width: 6px; height: 6px; background: var(--accent); transform: rotate(45deg); display: block; }
+
+  /* Progress */
+  .progress-wrap {
+    margin-bottom: 40px;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--light);
+    margin-bottom: 8px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* Steps */
+  .step { display: none; animation: fadeUp 0.4s ease; }
+  .step.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Question block */
+  .q-block {
+    margin-bottom: 36px;
+    padding: 28px 32px;
+    background: white;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--ink);
+    position: relative;
+  }
+
+  .q-block::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; right: -1px;
+    width: 12px; height: 12px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--paper);
+  }
+
+  .q-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .q-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+
+  .q-sub {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: var(--cream);
+    border-left: 2px solid var(--gold);
+  }
+
+  /* Radio / Checkbox options */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    transition: all 0.2s;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    position: relative;
+  }
+
+  .option-label:hover {
+    border-color: var(--ink);
+    background: var(--cream);
+  }
+
+  .option-label input { display: none; }
+
+  .option-box {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--light);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: white;
+  }
+
+  .option-label input[type="radio"] ~ .option-box { border-radius: 50%; }
+
+  .option-label.selected {
+    border-color: var(--ink);
+    background: var(--cream);
+  }
+
+  .option-label.selected .option-box {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .option-label.selected .option-box::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .option-label input[type="checkbox"] ~ .option-box { border-radius: 2px; }
+  .option-label.checked .option-box {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .option-label.checked .option-box::after {
+    content: '✓';
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    display: block;
+  }
+
+  /* Scale */
+  .scale-wrap { }
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--light);
+    margin-bottom: 12px;
+  }
+  .scale-options {
+    display: flex;
+    gap: 8px;
+  }
+  .scale-btn {
+    flex: 1;
+    aspect-ratio: 1;
+    max-width: 60px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--mid);
+  }
+  .scale-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .scale-btn.selected {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: white;
+  }
+
+  /* Textarea */
+  textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  textarea:focus { border-color: var(--ink); background: white; }
+  textarea::placeholder { color: var(--light); }
+
+  /* Text input */
+  input[type="text"], input[type="email"], input[type="tel"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus {
+    border-color: var(--ink);
+    background: white;
+  }
+  input::placeholder { color: var(--light); }
+
+  .input-group { display: flex; flex-direction: column; gap: 12px; }
+  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 500px) { .input-row { grid-template-columns: 1fr; } }
+  .input-label {
+    font-size: 12px;
+    color: var(--mid);
+    margin-bottom: 4px;
+    display: block;
+    letter-spacing: 0.5px;
+  }
+
+  /* Buttons */
+  .btn-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    gap: 12px;
+  }
+
+  .btn {
+    padding: 14px 32px;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-prev {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--mid);
+  }
+  .btn-prev:hover { border-color: var(--ink); color: var(--ink); }
+
+  .btn-next {
+    background: var(--ink);
+    color: white;
+    margin-left: auto;
+  }
+  .btn-next:hover { background: var(--accent); }
+
+  .btn-submit {
+    background: var(--accent);
+    color: white;
+    margin-left: auto;
+    padding: 16px 40px;
+  }
+  .btn-submit:hover { background: #a93226; }
+
+  /* Section label */
+  .section-tag {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-tag::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* Thank you */
+  .thankyou {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    animation: fadeUp 0.5s ease;
+  }
+  .thankyou.show { display: block; }
+
+  .ty-mark {
+    width: 64px;
+    height: 64px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+    font-size: 24px;
+  }
+
+  .ty-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+
+  .ty-desc {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.9;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .ty-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+    margin: 24px auto;
+  }
+
+  /* Required star */
+  .req { color: var(--accent); margin-left: 2px; }
+
+  /* Error */
+  .err-msg {
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 8px;
+    display: none;
+  }
+  .err-msg.show { display: block; }
+
+  @media print {
+    body::before { display: none; }
+    .btn-row, .progress-wrap { display: none; }
+    .step { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <span class="publisher-tag">삼양미디어 · 현장 의견 수렴</span>
+    <h1>
+      프로그래밍 교육의 미래,<br>선생님께 여쭙습니다
+      <em>— AI·바이브코딩 시대의 교과과정 방향성 —</em>
+    </h1>
+    <p class="header-desc">
+      AI 기술과 바이브코딩의 등장으로 프로그래밍 교육 현장에 큰 변화가 일고 있습니다.<br>
+      선생님의 솔직한 의견이 삼양미디어 교과서의 방향을 결정하는 데 큰 힘이 됩니다.<br>
+      약 <strong>5분</strong> 정도 소요되며, 응답해 주신 선생님 중 <strong>추첨을 통해 기프티콘</strong>을 드립니다.
+    </p>
+    <div class="header-ornament">
+      <span></span><i></i><span></span>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span id="step-label">1 / 4 단계</span>
+      <span id="step-pct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <!-- STEP 1: 기본 정보 -->
+  <div class="step active" id="step-1">
+    <div class="section-tag">SECTION 01 · 기본 정보</div>
+
+    <div class="q-block">
+      <span class="q-num">Q 01</span>
+      <p class="q-text">선생님에 대해 알려주세요 <span class="req">*</span></p>
+      <div class="input-group">
+        <div class="input-row">
+          <div>
+            <span class="input-label">성함</span>
+            <input type="text" id="name" placeholder="홍길동">
+          </div>
+          <div>
+            <span class="input-label">학교명</span>
+            <input type="text" id="school" placeholder="○○고등학교">
+          </div>
+        </div>
+        <div class="input-row">
+          <div>
+            <span class="input-label">이메일</span>
+            <input type="email" id="email" placeholder="teacher@school.kr">
+          </div>
+          <div>
+            <span class="input-label">연락처 (선택)</span>
+            <input type="tel" id="phone" placeholder="010-0000-0000">
+          </div>
+        </div>
+      </div>
+      <div class="err-msg" id="err-info">성함, 학교명, 이메일을 입력해 주세요.</div>
+    </div>
+
+    <div class="q-block">
+      <span class="q-num">Q 02</span>
+      <p class="q-text">현재 근무하시는 학교를 선택해 주세요 <span class="req">*</span></p>
+      <div class="options" id="q2">
+        <label class="option-label">
+          <input type="radio" name="grade" value="고등학교 일반">
+          <span class="option-box"></span>고등학교 (일반계)
+        </label>
+        <label class="option-label">
+          <input type="radio" name="grade" value="고등학교 직업">
+          <span class="option-box"></span>고등학교 (직업계)
+        </label>
+      </div>
+      <div class="err-msg" id="err-grade">교급을 선택해 주세요.</div>
+    </div>
+
+    <div class="q-block">
+      <span class="q-num">Q 03</span>
+      <p class="q-text">현재 가르치고 계신 프로그래밍 관련 과목을 모두 선택해 주세요 <span class="req">*</span></p>
+      <div class="options" id="q3">
+        <label class="option-label">
+          <input type="checkbox" name="subject" value="프로그래밍(C/C++)">
+          <span class="option-box"></span>프로그래밍 (C/C++)
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="subject" value="프로그래밍(파이썬)">
+          <span class="option-box"></span>프로그래밍 (파이썬)
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="subject" value="정보">
+          <span class="option-box"></span>정보
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="subject" value="인공지능 기초">
+          <span class="option-box"></span>인공지능 기초
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="subject" value="데이터과학">
+          <span class="option-box"></span>데이터과학
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="subject" value="기타">
+          <span class="option-box"></span>기타
+        </label>
+      </div>
+      <div class="err-msg" id="err-subject">과목을 하나 이상 선택해 주세요.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-next" onclick="goNext(1)">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: 현황 인식 -->
+  <div class="step" id="step-2">
+    <div class="section-tag">SECTION 02 · AI·바이브코딩 현황 인식</div>
+
+    <div class="q-block">
+      <span class="q-num">Q 04</span>
+      <p class="q-text">AI 도구(ChatGPT, Copilot 등)나 바이브코딩 방식이 수업 현장에서 얼마나 체감되고 있나요? <span class="req">*</span></p>
+      <div class="scale-wrap" id="q4">
+        <div class="scale-labels">
+          <span>전혀 체감 안 됨</span>
+          <span>매우 강하게 체감됨</span>
+        </div>
+        <div class="scale-options">
+          <button class="scale-btn" onclick="selectScale('q4',1,this)">1</button>
+          <button class="scale-btn" onclick="selectScale('q4',2,this)">2</button>
+          <button class="scale-btn" onclick="selectScale('q4',3,this)">3</button>
+          <button class="scale-btn" onclick="selectScale('q4',4,this)">4</button>
+          <button class="scale-btn" onclick="selectScale('q4',5,this)">5</button>
+        </div>
+      </div>
+      <div class="err-msg" id="err-q4">응답을 선택해 주세요.</div>
+    </div>
+
+    <div class="q-block">
+      <span class="q-num">Q 05</span>
+      <p class="q-text">AI·바이브코딩의 등장이 프로그래밍 교육에 어떤 영향을 줄 것이라고 생각하시나요? <span class="req">*</span></p>
+      <div class="options" id="q5">
+        <label class="option-label">
+          <input type="radio" name="impact" value="매우 위협적">
+          <span class="option-box"></span>매우 위협적이다 — 코딩을 직접 가르칠 필요성이 크게 줄어들 것이다
+        </label>
+        <label class="option-label">
+          <input type="radio" name="impact" value="다소 위협적">
+          <span class="option-box"></span>다소 위협적이다 — 교과 내용과 방식의 변화가 필요하다
+        </label>
+        <label class="option-label">
+          <input type="radio" name="impact" value="새로운 기회">
+          <span class="option-box"></span>새로운 기회다 — AI를 활용한 교육으로 발전할 수 있다
+        </label>
+        <label class="option-label">
+          <input type="radio" name="impact" value="큰 영향 없음">
+          <span class="option-box"></span>큰 영향이 없다 — 기초 코딩 교육의 본질은 변하지 않는다
+        </label>
+        <label class="option-label">
+          <input type="radio" name="impact" value="모르겠음">
+          <span class="option-box"></span>아직 잘 모르겠다
+        </label>
+      </div>
+      <div class="err-msg" id="err-q5">응답을 선택해 주세요.</div>
+    </div>
+
+    <div class="q-block">
+      <span class="q-num">Q 06</span>
+      <p class="q-text">현재 교과서에서 가장 시급하게 보완이 필요한 부분은 무엇인가요? <span class="req">*</span><br>
+      <small style="font-size:12px;color:var(--mid)">(중복 선택 가능)</small></p>
+      <div class="options" id="q6">
+        <label class="option-label">
+          <input type="checkbox" name="need" value="AI 도구 활용 내용 추가">
+          <span class="option-box"></span>AI 도구 활용 내용 추가 (ChatGPT, Copilot 등 실습)
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="need" value="프롬프트 엔지니어링">
+          <span class="option-box"></span>프롬프트 엔지니어링 / AI와 협업하는 방법 교육
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="need" value="컴퓨팅 사고력 강화">
+          <span class="option-box"></span>코딩보다 컴퓨팅 사고력·문제해결 중심으로 전환
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="need" value="AI 윤리 내용">
+          <span class="option-box"></span>AI 윤리 및 데이터 리터러시 내용 강화
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="need" value="현행 유지">
+          <span class="option-box"></span>현재 내용을 유지하되 예제 및 실습 강화
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="need" value="기타">
+          <span class="option-box"></span>기타
+        </label>
+      </div>
+      <div class="err-msg" id="err-q6">하나 이상 선택해 주세요.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-prev" onclick="goPrev(2)">← 이전</button>
+      <button class="btn btn-next" onclick="goNext(2)">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: 삼양미디어 역할 -->
+  <div class="step" id="step-3">
+    <div class="section-tag">SECTION 03 · 삼양미디어에 바라는 점</div>
+
+    <div class="q-block">
+      <span class="q-num">Q 07</span>
+      <p class="q-text">삼양미디어가 가장 우선적으로 집중해야 할 역할은 무엇이라고 생각하시나요? <span class="req">*</span></p>
+      <div class="options" id="q7">
+        <label class="option-label">
+          <input type="radio" name="role" value="AI 통합 교과서 개정">
+          <span class="option-box"></span>AI·바이브코딩을 반영한 교과서 전면 개정
+        </label>
+        <label class="option-label">
+          <input type="radio" name="role" value="보조 학습자료 개발">
+          <span class="option-box"></span>교사용 AI 활용 수업자료·지도서 개발
+        </label>
+        <label class="option-label">
+          <input type="radio" name="role" value="연수/워크숍 지원">
+          <span class="option-box"></span>교사 연수·워크숍 프로그램 운영 지원
+        </label>
+        <label class="option-label">
+          <input type="radio" name="role" value="디지털 교육 플랫폼">
+          <span class="option-box"></span>온라인 실습 환경·디지털 교육 플랫폼 제공
+        </label>
+        <label class="option-label">
+          <input type="radio" name="role" value="현장 의견 수렴 지속">
+          <span class="option-box"></span>현장 교사 의견을 지속적으로 수렴하고 반영하는 체계 구축
+        </label>
+      </div>
+      <div class="err-msg" id="err-q7">응답을 선택해 주세요.</div>
+    </div>
+
+    <div class="q-block">
+      <span class="q-num">Q 08</span>
+      <p class="q-text">새 교과서·교재를 개발한다면 반드시 포함되었으면 하는 내용이나 방식이 있으신가요?</p>
+      <textarea id="q8" placeholder="예: AI와 함께 프로젝트를 완성하는 단원, 실제 직업에서 쓰이는 사례 중심 수업 등 자유롭게 적어주세요."></textarea>
+    </div>
+
+    <div class="q-block">
+      <span class="q-num">Q 09</span>
+      <p class="q-text">교사 입장에서 가장 어려운 점은 무엇인가요? <span class="req">*</span></p>
+      <div class="options" id="q9">
+        <label class="option-label">
+          <input type="radio" name="difficulty" value="변화 속도 따라가기">
+          <span class="option-box"></span>너무 빠른 기술 변화를 교육 현장에서 따라가기 어렵다
+        </label>
+        <label class="option-label">
+          <input type="radio" name="difficulty" value="평가 기준 부재">
+          <span class="option-box"></span>AI 활용 수업에 대한 명확한 평가 기준이 없다
+        </label>
+        <label class="option-label">
+          <input type="radio" name="difficulty" value="학생 수준 격차">
+          <span class="option-box"></span>AI 도구 접근성 및 학생 간 수준 격차가 크다
+        </label>
+        <label class="option-label">
+          <input type="radio" name="difficulty" value="교과서-현실 괴리">
+          <span class="option-box"></span>교과서 내용이 현실과 너무 동떨어져 있다
+        </label>
+        <label class="option-label">
+          <input type="radio" name="difficulty" value="교사 재교육 부족">
+          <span class="option-box"></span>교사 본인의 AI 관련 재교육 기회가 부족하다
+        </label>
+      </div>
+      <div class="err-msg" id="err-q9">응답을 선택해 주세요.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-prev" onclick="goPrev(3)">← 이전</button>
+      <button class="btn btn-next" onclick="goNext(3)">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: 마지막 -->
+  <div class="step" id="step-4">
+    <div class="section-tag">SECTION 04 · 마지막 한 마디</div>
+
+    <div class="q-block">
+      <span class="q-num">Q 10</span>
+      <p class="q-text">삼양미디어에 자유롭게 전하고 싶은 말씀이 있으시면 적어주세요</p>
+      <p class="q-sub">프로그래밍 교육의 미래에 대한 생각, 출판사에 바라는 점, 또는 현장의 어려움 등 어떤 내용이든 환영합니다.</p>
+      <textarea id="q10" style="min-height:160px" placeholder="솔직하게 적어주실수록 큰 도움이 됩니다."></textarea>
+    </div>
+
+    <div class="q-block">
+      <span class="q-num">Q 11</span>
+      <p class="q-text">추후 삼양미디어의 교과서 개발 과정에 자문·인터뷰 참여 의사가 있으신가요?</p>
+      <div class="options" id="q11">
+        <label class="option-label">
+          <input type="radio" name="interview" value="적극 참여">
+          <span class="option-box"></span>적극적으로 참여하고 싶다
+        </label>
+        <label class="option-label">
+          <input type="radio" name="interview" value="연락 주면 검토">
+          <span class="option-box"></span>연락이 오면 검토해 보겠다
+        </label>
+        <label class="option-label">
+          <input type="radio" name="interview" value="어려울 것 같음">
+          <span class="option-box"></span>일정상 어려울 것 같다
+        </label>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-prev" onclick="goPrev(4)">← 이전</button>
+      <button class="btn btn-submit" onclick="submitForm()">설문 제출하기 ✓</button>
+    </div>
+  </div>
+
+  <!-- Thank you -->
+  <div class="thankyou" id="thankyou">
+    <div class="ty-mark">✓</div>
+    <h2 class="ty-title">소중한 의견 감사드립니다</h2>
+    <div class="ty-divider"></div>
+    <p class="ty-desc">
+      선생님께서 보내주신 답변은 삼양미디어가 더 나은 프로그래밍 교과서를 만드는 데<br>
+      직접적인 근거가 됩니다.<br><br>
+      현장의 목소리를 소중히 담아<br>
+      AI 시대에도 의미 있는 교육 자료를 만들어 나가겠습니다.<br><br>
+      <strong>(주)삼양미디어 드림</strong><br><br>
+      <span style="display:inline-block; margin-top:12px; padding:12px 20px; border:1px solid var(--gold); background:rgba(184,134,11,0.06); font-size:13px; color:var(--gold); line-height:1.7;">
+        🎁 설문에 응답해 주신 선생님 중 <strong>추첨</strong>을 통해<br>소정의 <strong>기프티콘</strong>을 보내드립니다.
+      </span>
+    </p>
+  </div>
+
+</div>
+
+<script>
+  let answers = {};
+  const totalSteps = 4;
+
+  function updateProgress(step) {
+    const pct = Math.round(((step - 1) / totalSteps) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('step-label').textContent = step + ' / ' + totalSteps + ' 단계';
+    document.getElementById('step-pct').textContent = pct + '%';
+  }
+
+  // Radio / checkbox click handlers
+  document.querySelectorAll('.option-label').forEach(label => {
+    label.addEventListener('click', function() {
+      const input = this.querySelector('input');
+      if (input.type === 'radio') {
+        document.querySelectorAll(`input[name="${input.name}"]`).forEach(r => {
+          r.closest('.option-label').classList.remove('selected');
+        });
+        this.classList.add('selected');
+        input.checked = true;
+      } else {
+        input.checked = !input.checked;
+        this.classList.toggle('checked', input.checked);
+      }
+    });
+  });
+
+  function selectScale(qid, val, btn) {
+    document.querySelectorAll(`#${qid} .scale-btn`).forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    answers[qid] = val;
+  }
+
+  function validateStep(step) {
+    let valid = true;
+
+    if (step === 1) {
+      const name = document.getElementById('name').value.trim();
+      const school = document.getElementById('school').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const errInfo = document.getElementById('err-info');
+      if (!name || !school || !email) {
+        errInfo.classList.add('show');
+        valid = false;
+      } else errInfo.classList.remove('show');
+
+      const gradeChecked = document.querySelector('input[name="grade"]:checked');
+      const errGrade = document.getElementById('err-grade');
+      if (!gradeChecked) {
+        errGrade.classList.add('show');
+        valid = false;
+      } else errGrade.classList.remove('show');
+
+      const subjectChecked = document.querySelectorAll('input[name="subject"]:checked');
+      const errSubject = document.getElementById('err-subject');
+      if (subjectChecked.length === 0) {
+        errSubject.classList.add('show');
+        valid = false;
+      } else errSubject.classList.remove('show');
+    }
+
+    if (step === 2) {
+      const errQ4 = document.getElementById('err-q4');
+      if (!answers['q4']) {
+        errQ4.classList.add('show');
+        valid = false;
+      } else errQ4.classList.remove('show');
+
+      const q5 = document.querySelector('input[name="impact"]:checked');
+      if (!q5) {
+        document.getElementById('err-q5').classList.add('show');
+        valid = false;
+      } else document.getElementById('err-q5').classList.remove('show');
+
+      const q6 = document.querySelectorAll('input[name="need"]:checked');
+      if (q6.length === 0) {
+        document.getElementById('err-q6').classList.add('show');
+        valid = false;
+      } else document.getElementById('err-q6').classList.remove('show');
+    }
+
+    if (step === 3) {
+      const q7 = document.querySelector('input[name="role"]:checked');
+      if (!q7) {
+        document.getElementById('err-q7').classList.add('show');
+        valid = false;
+      } else document.getElementById('err-q7').classList.remove('show');
+
+      const q9 = document.querySelector('input[name="difficulty"]:checked');
+      if (!q9) {
+        document.getElementById('err-q9').classList.add('show');
+        valid = false;
+      } else document.getElementById('err-q9').classList.remove('show');
+    }
+
+    return valid;
+  }
+
+  function goNext(current) {
+    if (!validateStep(current)) {
+      document.querySelector(`#step-${current} .err-msg.show`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    document.getElementById(`step-${current}`).classList.remove('active');
+    const next = current + 1;
+    document.getElementById(`step-${next}`).classList.add('active');
+    updateProgress(next);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goPrev(current) {
+    document.getElementById(`step-${current}`).classList.remove('active');
+    const prev = current - 1;
+    document.getElementById(`step-${prev}`).classList.add('active');
+    updateProgress(prev);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function submitForm() {
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = '제출 중...';
+    btn.disabled = true;
+
+    const data = {
+      name:    document.getElementById('name').value.trim(),
+      school:  document.getElementById('school').value.trim(),
+      email:   document.getElementById('email').value.trim(),
+      phone:   document.getElementById('phone').value.trim(),
+      grade:   document.querySelector('input[name="grade"]:checked')?.value || '',
+      subject: [...document.querySelectorAll('input[name="subject"]:checked')].map(i => i.value).join(', '),
+      q4:      answers['q4'] || '',
+      q5:      document.querySelector('input[name="impact"]:checked')?.value || '',
+      q6:      [...document.querySelectorAll('input[name="need"]:checked')].map(i => i.value).join(', '),
+      q7:      document.querySelector('input[name="role"]:checked')?.value || '',
+      q8:      document.getElementById('q8').value.trim(),
+      q9:      document.querySelector('input[name="difficulty"]:checked')?.value || '',
+      q10:     document.getElementById('q10').value.trim(),
+      q11:     document.querySelector('input[name="interview"]:checked')?.value || '',
+    };
+
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbzoCx8hfVFs3-u1yOD_pXU4J8wkhsCV49Z2lojDURhBEErlmrv-8OHTa-ydQOf--Ul3/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+    } catch (e) {
+      console.error('제출 오류:', e);
+    }
+
+    // 성공 여부와 관계없이 완료 화면 표시
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('thankyou').classList.add('show');
+    document.getElementById('progress-fill').style.width = '100%';
+    document.getElementById('step-label').textContent = '완료';
+    document.getElementById('step-pct').textContent = '100%';
+    document.querySelector('.progress-wrap').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  updateProgress(1);
+</script>
+</body>
+</html>
