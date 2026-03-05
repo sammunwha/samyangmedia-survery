@@ -439,6 +439,77 @@
     margin: 24px auto;
   }
 
+  /* Privacy consent */
+  .privacy-box {
+    border: 1px solid var(--border);
+    background: white;
+    margin-bottom: 20px;
+  }
+  .privacy-title {
+    background: var(--ink);
+    color: white;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    padding: 10px 16px;
+  }
+  .privacy-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .privacy-table th {
+    background: var(--cream);
+    color: var(--mid);
+    font-weight: 500;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    width: 25%;
+    text-align: left;
+    vertical-align: top;
+  }
+  .privacy-table td {
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    color: var(--ink);
+    line-height: 1.7;
+    vertical-align: top;
+  }
+  .privacy-agree {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .privacy-agree input { display: none; }
+  .privacy-agree-box {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--light);
+    border-radius: 2px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    transition: all 0.2s;
+  }
+  .privacy-agree.checked .privacy-agree-box {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .privacy-agree.checked .privacy-agree-box::after {
+    content: '✓';
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
   /* Required star */
   .req { color: var(--accent); margin-left: 2px; }
 
@@ -481,14 +552,55 @@
   <!-- Progress -->
   <div class="progress-wrap">
     <div class="progress-meta">
-      <span id="step-label">1 / 4 단계</span>
+      <span id="step-label">1 / 5 단계</span>
       <span id="step-pct">0%</span>
     </div>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
   </div>
 
+  <!-- STEP 0: 개인정보 동의 -->
+  <div class="step active" id="step-0">
+    <div class="section-tag">SECTION 00 · 개인정보 수집·이용 동의</div>
+
+    <div class="q-block">
+      <span class="q-num">개인정보 수집·이용 동의</span>
+      <p class="q-text">설문 참여 전 아래 내용을 확인하신 후 동의해 주세요 <span class="req">*</span></p>
+      <div class="privacy-box">
+        <div class="privacy-title">개인정보 수집·이용 안내</div>
+        <table class="privacy-table">
+          <tr>
+            <th>수집 항목</th>
+            <td>성명, 학교명, 이메일, 연락처</td>
+          </tr>
+          <tr>
+            <th>수집 목적</th>
+            <td>설문 응답 분석, 기프티콘 당첨자 연락</td>
+          </tr>
+          <tr>
+            <th>보유 기간</th>
+            <td>설문 종료 후 6개월, 이후 즉시 파기</td>
+          </tr>
+          <tr>
+            <th>제3자 제공</th>
+            <td>없음 (외부 제공 없이 삼양미디어 내부에서만 활용)</td>
+          </tr>
+        </table>
+      </div>
+      <label class="privacy-agree" id="privacy-label" onclick="togglePrivacy()">
+        <input type="checkbox" id="privacy-check">
+        <span class="privacy-agree-box"></span>
+        위 개인정보 수집·이용에 동의합니다. <span class="req">*</span>
+      </label>
+      <div class="err-msg" id="err-privacy">개인정보 수집·이용에 동의해 주세요.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-next" onclick="goNext(0)">동의하고 시작하기 →</button>
+    </div>
+  </div>
+
   <!-- STEP 1: 기본 정보 -->
-  <div class="step active" id="step-1">
+  <div class="step" id="step-1">
     <div class="section-tag">SECTION 01 · 기본 정보</div>
 
     <div class="q-block">
@@ -791,40 +903,33 @@
 
 <script>
   let answers = {};
-  const totalSteps = 4;
+  const totalSteps = 5;
 
   function updateProgress(step) {
-    const pct = Math.round(((step - 1) / totalSteps) * 100);
+    const pct = Math.round((step / totalSteps) * 100);
     document.getElementById('progress-fill').style.width = pct + '%';
-    document.getElementById('step-label').textContent = step + ' / ' + totalSteps + ' 단계';
+    document.getElementById('step-label').textContent = (step + 1) + ' / ' + totalSteps + ' 단계';
     document.getElementById('step-pct').textContent = pct + '%';
   }
 
-  // Radio / checkbox click handlers
-  document.querySelectorAll('.option-label').forEach(label => {
-    label.addEventListener('click', function() {
-      const input = this.querySelector('input');
-      if (input.type === 'radio') {
-        document.querySelectorAll(`input[name="${input.name}"]`).forEach(r => {
-          r.closest('.option-label').classList.remove('selected');
-        });
-        this.classList.add('selected');
-        input.checked = true;
-      } else {
-        input.checked = !input.checked;
-        this.classList.toggle('checked', input.checked);
-      }
-    });
-  });
-
-  function selectScale(qid, val, btn) {
-    document.querySelectorAll(`#${qid} .scale-btn`).forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    answers[qid] = val;
+  function togglePrivacy() {
+    const label = document.getElementById('privacy-label');
+    const check = document.getElementById('privacy-check');
+    check.checked = !check.checked;
+    label.classList.toggle('checked', check.checked);
   }
 
   function validateStep(step) {
     let valid = true;
+
+    if (step === 0) {
+      const privacyCheck = document.getElementById('privacy-check');
+      const errPrivacy = document.getElementById('err-privacy');
+      if (!privacyCheck.checked) {
+        errPrivacy.classList.add('show');
+        valid = false;
+      } else errPrivacy.classList.remove('show');
+    }
 
     if (step === 1) {
       const name = document.getElementById('name').value.trim();
@@ -909,6 +1014,16 @@
   }
 
   async function submitForm() {
+    // 개인정보 동의 체크
+    const privacyCheck = document.getElementById('privacy-check');
+    const errPrivacy = document.getElementById('err-privacy');
+    if (!privacyCheck.checked) {
+      errPrivacy.classList.add('show');
+      errPrivacy.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    errPrivacy.classList.remove('show');
+
     const btn = document.querySelector('.btn-submit');
     btn.textContent = '제출 중...';
     btn.disabled = true;
@@ -951,7 +1066,30 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  updateProgress(1);
+  // Radio / checkbox click handlers
+  document.querySelectorAll('.option-label').forEach(label => {
+    label.addEventListener('click', function() {
+      const input = this.querySelector('input');
+      if (input.type === 'radio') {
+        document.querySelectorAll(`input[name="${input.name}"]`).forEach(r => {
+          r.closest('.option-label').classList.remove('selected');
+        });
+        this.classList.add('selected');
+        input.checked = true;
+      } else {
+        input.checked = !input.checked;
+        this.classList.toggle('checked', input.checked);
+      }
+    });
+  });
+
+  function selectScale(qid, val, btn) {
+    document.querySelectorAll(`#${qid} .scale-btn`).forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    answers[qid] = val;
+  }
+
+  updateProgress(0);
 </script>
 </body>
 </html>
